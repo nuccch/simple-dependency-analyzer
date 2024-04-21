@@ -1,9 +1,11 @@
 package org.chench.extra.simple.dependency.analyzer.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.chench.extra.simple.dependency.analyzer.bean.CalculateEdge;
 import org.chench.extra.simple.dependency.analyzer.bean.Edge;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
+import org.chench.extra.simple.dependency.analyzer.util.EdgeUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -49,7 +51,7 @@ public class GraphvizIOHandler implements IOHandler {
                         findAllPath(entry.getKey(), dependencies, path);
                         // 将第一条边替换为当前要处理的依赖
                         path.set(0, new Edge(entry.getKey(), artifactId));
-                        boolean cycleDependency = checkCycleDependency(path);
+                        boolean cycleDependency = existCyclePath(EdgeUtil.wrapCalculateEdge(path));
                         String color = cycleDependency ? CommonConstant.COLOR_RED : CommonConstant.COLOR_BLACK;
                         System.out.println(path);
                         writer.write(String.format("%s->%s[color=%s];\n", formatName(entry.getKey()), formatName(artifactId), color));
@@ -81,58 +83,40 @@ public class GraphvizIOHandler implements IOHandler {
         }
     }
 
-    /**
-     * 检查是否存在循环依赖 TODO：算法实现是存在缺陷的，需要完善
-     * @param path
-     * @return
-     */
-    private boolean checkCycleDependency(List<Edge> path) {
-        if (path.isEmpty()) {
-            return false;
-        }
-        if (path.size() == 1) {
-            return false;
-        }
-
+    private Stack<Edge> stack = new Stack<>();
+    private boolean existCyclePath(List<CalculateEdge> path) {
+        stack.clear();
         Edge first = path.get(0);
-//        Edge last = path.get(path.size() - 1);
-//        boolean cycle = first.getStart().equals(last.getEnd());
-//        if (!cycle) {
-//            return false;
-//        }
-
-        List<Edge> cyclePath = new ArrayList<>();
-        findCyclePath(1, first, path, cyclePath);
-        if (cyclePath.isEmpty()) {
-            return false;
-        }
-        if (cyclePath.get(cyclePath.size() - 1).getEnd().equals(first.getStart())) {
-            // 快速检查
-            return true;
-        }
-        for (Edge edge : cyclePath) {
-            // 遍历检查
-            if (edge.getEnd().equals(first.getStart())) {
-                return true;
+        stack.push(first);
+        while (true) {
+            if (stack.isEmpty()) {
+                break;
             }
-        }
-        for (Edge edge : path) {
-            // 遍历检查
-            if (edge.getEnd().equals(first.getStart())) {
+
+            Edge edge = stack.peek();
+            Edge next = findNextEdge(edge.getEnd(), path);
+            if (next == null) {
+                stack.pop();
+            }
+            if (next != null) {
+                stack.push(next);
+            }
+            if (!stack.isEmpty() &&stack.peek().getEnd().equals(first.getStart())) {
                 return true;
             }
         }
         return false;
     }
 
-    private void findCyclePath(int index, Edge first, List<Edge> path, List<Edge> cyclePath) {
-        for (int i = index; i < path.size(); i++) {
-            Edge list = path.get(i);
-            if (first.getEnd().equals(list.getStart())) {
-                cyclePath.add(list);
-                findCyclePath(i+1, list, path, cyclePath);
+    private Edge findNextEdge(String lastEnd, List<CalculateEdge> path) {
+        for (int i = 1; i < path.size(); i++) {
+            CalculateEdge edge = path.get(i);
+            if (!edge.isChecked() && edge.getStart().equals(lastEnd)) {
+                edge.setChecked(true);
+                return edge;
             }
         }
+        return null;
     }
 
     /**
