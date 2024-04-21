@@ -4,9 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @author chench
@@ -43,20 +41,28 @@ public class ZPanel extends javax.swing.JPanel {
             imgPath = "nothing.png";
         }
 
-        // 该方法不推荐使用，该方法是懒加载，图像并不加载到内存，当拿图像的宽和高时会返回-1；
-        // image = Toolkit.getDefaultToolkit().getImage(imgPath);
         try {
+            // 该方法不推荐使用，该方法是懒加载，图像并不加载到内存，当拿图像的宽和高时会返回-1；
+            // image = Toolkit.getDefaultToolkit().getImage(imgPath);
+
+            File file = new File(imgPath);
+            InputStream is = null;
+            if (file.exists()) {
+                is = new FileInputStream(file);
+            } else {
+                is = getClass().getClassLoader().getResourceAsStream(imgPath);
+            }
+
             // 该方法会将图像加载到内存，从而拿到图像的详细信息。
-            image = ImageIO.read(new FileInputStream(imgPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            image = ImageIO.read(is);
+            is.close();
+            setImgWidth(image.getWidth(this));
+            setImgHeight(image.getHeight(this));
+            this.setPreferredSize(new Dimension(this.imgWidth, this.imgHeight));
+            this.updateUI();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        setImgWidth(image.getWidth(this));
-        setImgHeight(image.getHeight(this));
-        this.setPreferredSize(new Dimension(this.imgWidth, this.imgHeight));
-        this.updateUI();
     }
 
     @Override

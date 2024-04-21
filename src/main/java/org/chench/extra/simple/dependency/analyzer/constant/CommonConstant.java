@@ -9,6 +9,8 @@ import java.util.List;
  * @date 2024.04.19
  */
 public abstract class CommonConstant {
+    public static final String PATH_TMP = "tmp";
+
     public static final String COLOR_RED = "red";
     public static final String COLOR_BLACK = "black";
 

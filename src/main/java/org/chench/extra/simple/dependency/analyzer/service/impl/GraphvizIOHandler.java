@@ -19,9 +19,12 @@ public class GraphvizIOHandler implements IOHandler {
     @Override
     public String buildInput(Map<String, String> modules, Map<String, List<String>> dependencies, String name) {
         try {
-            String graphvizInput = String.format("%s.dot", name);
+            String graphvizInput = String.format("%s%s%s.dot", CommonConstant.PATH_TMP, File.separator, name);
             File configFile = new File(graphvizInput);
             if (!configFile.exists()) {
+                if (!configFile.getParentFile().exists()) {
+                    configFile.getParentFile().mkdirs();
+                }
                 configFile.createNewFile();
             }
             BufferedWriter writer = new BufferedWriter(new FileWriter(graphvizInput));
@@ -64,9 +67,12 @@ public class GraphvizIOHandler implements IOHandler {
     @Override
     public String buildOutput(String name) {
         try {
-            String graphvizOutput = String.format("%s.png", name);
+            String graphvizOutput = String.format("%s%s%s.png", CommonConstant.PATH_TMP, File.separator, name);
             File outputFile = new File(graphvizOutput);
             if (!outputFile.exists()) {
+                if (!outputFile.getParentFile().exists()) {
+                    outputFile.getParentFile().mkdirs();
+                }
                 outputFile.createNewFile();
             }
             return graphvizOutput;

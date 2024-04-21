@@ -44,6 +44,22 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <!-- 指定资源目录 -->
+                <directory>src/main/resources</directory>
+                <!-- 不打包指定类型的资源 -->
+                <excludes>
+                    <exclude>**/*.svn</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>nothing.png</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
