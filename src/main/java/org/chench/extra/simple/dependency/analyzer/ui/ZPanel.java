@@ -55,6 +55,8 @@ public class ZPanel extends javax.swing.JPanel {
         }
         setImgWidth(image.getWidth(this));
         setImgHeight(image.getHeight(this));
+        this.setPreferredSize(new Dimension(this.imgWidth, this.imgHeight));
+        this.updateUI();
     }
 
     @Override

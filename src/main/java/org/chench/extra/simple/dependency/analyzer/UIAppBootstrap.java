@@ -68,12 +68,11 @@ public class UIAppBootstrap {
 
         // 展示依赖图
         ZPanel zPanel = new ZPanel();
-        //zPanel.setPreferredSize(new Dimension(zPanel.getImgWidth(), zPanel.getImgHeight()));
         JScrollPane jScrollPane = new JScrollPane(zPanel);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane.getHorizontalScrollBar().addAdjustmentListener(e -> SwingUtilities.invokeLater(() -> frame.repaint()));
-        jScrollPane.getVerticalScrollBar().addAdjustmentListener(e -> SwingUtilities.invokeLater(() -> frame.repaint()));
+        jScrollPane.getHorizontalScrollBar().addAdjustmentListener(e -> SwingUtilities.invokeLater(() -> jScrollPane.updateUI()));
+        jScrollPane.getVerticalScrollBar().addAdjustmentListener(e -> SwingUtilities.invokeLater(() -> jScrollPane.updateUI()));
         framePanel.add(jScrollPane, BorderLayout.CENTER);
 
         executeButton.addActionListener(e -> {
@@ -82,9 +81,9 @@ public class UIAppBootstrap {
                 return;
             }
             String output = new AppExecutor().execute(dir);
-            zPanel.setImagePath(output);
-            zPanel.setPreferredSize(new Dimension(zPanel.getImgWidth(), zPanel.getImgHeight()));
-            SwingUtilities.invokeLater(() -> frame.update(frame.getGraphics()));
+            SwingUtilities.invokeLater(() -> {
+                zPanel.setImagePath(output);
+            });
         });
     }
 
