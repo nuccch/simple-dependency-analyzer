@@ -23,7 +23,7 @@ public class GraphvizExecutor implements Executor {
             //接收异常结果流
             ByteArrayOutputStream errStream = new ByteArrayOutputStream();
             CommandLine commandLine = CommandLine.parse(cmd);
-            DefaultExecutor exec = new DefaultExecutor();
+            DefaultExecutor exec = new DefaultExecutor.Builder().get();
             PumpStreamHandler streamHandler = new PumpStreamHandler(ioStream, errStream);
             exec.setStreamHandler(streamHandler);
             int code = exec.execute(commandLine);
