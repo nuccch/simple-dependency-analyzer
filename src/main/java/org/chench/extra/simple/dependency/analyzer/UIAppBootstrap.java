@@ -1,6 +1,7 @@
 package org.chench.extra.simple.dependency.analyzer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.ui.JTextFieldHintListener;
 import org.chench.extra.simple.dependency.analyzer.ui.ZPanel;
 
@@ -57,7 +58,7 @@ public class UIAppBootstrap {
         ignoreDirText.addFocusListener(new JTextFieldHintListener(ignoreDirText, "多个名称使用英文逗号分隔"));
         panel.add(ignoreDirText);
 
-        // 创建登录按钮
+        // 开始分析按钮
         JButton executeButton = new JButton("开始分析");
         executeButton.setPreferredSize(new Dimension(100, 25));
         panel.add(executeButton);
@@ -80,7 +81,9 @@ public class UIAppBootstrap {
             if (StringUtils.isBlank(dir)) {
                 return;
             }
-            String output = new AppExecutor().execute(dir);
+
+            String[] ignores = ignoreDirText.getText().split(CommonConstant.SPLIT_CHAR);
+            String output = new AppExecutor().execute(dir, ignores);
             SwingUtilities.invokeLater(() -> {
                 zPanel.setImagePath(output);
             });

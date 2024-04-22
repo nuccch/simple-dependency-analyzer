@@ -11,8 +11,16 @@
 ## 使用
 
 有两种方式运行该程序：
-1. 通过java命令行执行，格式：`java -jar simple-dependency-analyzer-0.0.1-SNAPSHOT-jar-with-dependencies.jar <需要分析的项目绝对路径>`，如：`java -jar simple-dependency-analyzer-0.0.1-SNAPSHOT-jar-with-dependencies.jar D:\sun\workspace_opensource_myself\test-java-samples`
-2. 启动图形化界面
+1. 通过java命令行执行，格式：`java -jar simple-dependency-analyzer-0.0.1-SNAPSHOT-jar-with-dependencies.jar <需要分析的项目绝对路径> [需要忽略的目录名，以英文逗号分隔]`。  
+```shell
+# 不设置忽略的目录名
+java -jar simple-dependency-analyzer-0.0.1-SNAPSHOT-jar-with-dependencies.jar D:\sun\workspace\test-java-samples
+
+# 设置需要忽略的目录名
+java -jar simple-dependency-analyzer-0.0.1-SNAPSHOT-jar-with-dependencies.jar D:\sun\workspace\test-java-samples mac,boar
+```  
+
+2. 启动图形化界面  
 
 ## 依赖
 

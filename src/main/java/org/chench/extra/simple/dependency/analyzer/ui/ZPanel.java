@@ -1,6 +1,7 @@
 package org.chench.extra.simple.dependency.analyzer.ui;
 
 import org.apache.commons.lang3.StringUtils;
+import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -33,12 +34,12 @@ public class ZPanel extends javax.swing.JPanel {
     }
 
     public ZPanel() {
-        setImagePath("nothing.png");
+        setImagePath(CommonConstant.IMAGE_NONE);
     }
 
     public void setImagePath(String imgPath) {
         if (StringUtils.isBlank(imgPath)) {
-            imgPath = "nothing.png";
+            imgPath = CommonConstant.IMAGE_NONE;
         }
 
         try {

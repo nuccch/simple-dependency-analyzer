@@ -9,7 +9,12 @@ import java.util.List;
  * @date 2024.04.19
  */
 public abstract class CommonConstant {
+    public static final String ICON = "favicon.ico";
+    public static final String IMAGE_NONE = "none.png";
+    public static final String IMAGE_DEFAULT = "default.png";
+
     public static final String PATH_TMP = "tmp";
+    public static final String SPLIT_CHAR = ",";
 
     public static final String COLOR_RED = "red";
     public static final String COLOR_BLACK = "black";

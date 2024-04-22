@@ -1,5 +1,6 @@
 package org.chench.extra.simple.dependency.analyzer;
 
+import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.Executor;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
 import org.chench.extra.simple.dependency.analyzer.service.Parser;
@@ -9,6 +10,8 @@ import org.chench.extra.simple.dependency.analyzer.service.impl.MavenParser;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author chench
@@ -20,6 +23,18 @@ public class AppExecutor {
         parser.setExtraIgnoreDirs(ignore);
         Map<String, String> modules = parser.parseModule(dir);
         Map<String, List<String>> dependencies = parser.parseDependency(modules);
+
+        // 没有任何依赖关系存在，直接返回
+        if (Objects.isNull(dependencies) || dependencies.isEmpty()) {
+            return CommonConstant.IMAGE_NONE;
+        }
+
+        if (dependencies.size() == 1) {
+            String key = dependencies.keySet().stream().collect(Collectors.toList()).get(0);
+            if (dependencies.get(key).isEmpty()) {
+                return CommonConstant.IMAGE_NONE;
+            }
+        }
 
         // 打印内部模块之间的依赖关系
         for (Map.Entry<String, List<String>> entry : dependencies.entrySet()) {

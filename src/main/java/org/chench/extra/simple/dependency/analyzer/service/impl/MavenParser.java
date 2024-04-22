@@ -57,7 +57,9 @@ public class MavenParser implements Parser {
     public void setExtraIgnoreDirs(String... ignore) {
         List<String> ignoreDirNames = new ArrayList<>();
         ignoreDirNames.addAll(CommonConstant.IGNORE_DIR_NAMES);
-        ignoreDirNames.addAll(Arrays.asList(ignore));
+        if (!Objects.isNull(ignore) && ignore.length > 0) {
+            ignoreDirNames.addAll(Arrays.asList(ignore));
+        }
         this.ignoreDirList = ignoreDirNames;
     }
 
