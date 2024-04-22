@@ -12,6 +12,7 @@ public abstract class CommonConstant {
     public static final String ICON = "favicon.ico";
     public static final String IMAGE_NONE = "none.png";
     public static final String IMAGE_DEFAULT = "default.png";
+    public static final String IMAGE_EMPTY = "empty.png";
 
     public static final String PATH_TMP = "tmp";
     public static final String SPLIT_CHAR = ",";

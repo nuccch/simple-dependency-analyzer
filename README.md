@@ -24,7 +24,7 @@ java -jar simple-dependency-analyzer-0.0.1-SNAPSHOT-jar-with-dependencies.jar D:
 
 ## 依赖
 
-本工具依赖[Graphviz](https://graphviz.org/)，在运行之前必须先安装相应操作系统平台对应的Graphviz。  
+本工具依赖[Graphviz](https://graphviz.org/), 在运行之前必须先安装相应操作系统平台对应的Graphviz。  
 同时，还需要安装Java 8+运行时环境。
 
 

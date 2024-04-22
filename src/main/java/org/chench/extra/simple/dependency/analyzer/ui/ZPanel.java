@@ -34,12 +34,12 @@ public class ZPanel extends javax.swing.JPanel {
     }
 
     public ZPanel() {
-        setImagePath(CommonConstant.IMAGE_NONE);
+        setImagePath(CommonConstant.IMAGE_EMPTY);
     }
 
     public void setImagePath(String imgPath) {
         if (StringUtils.isBlank(imgPath)) {
-            imgPath = CommonConstant.IMAGE_NONE;
+            imgPath = CommonConstant.IMAGE_EMPTY;
         }
 
         try {

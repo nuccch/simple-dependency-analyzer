@@ -22,6 +22,8 @@ public class UIAppBootstrap {
     private void start() {
         // 创建 JFrame 实例
         JFrame frame = new JFrame("简单依赖分析器");
+        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource(CommonConstant.IMAGE_DEFAULT));
+        frame.setIconImage(imageIcon.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
@@ -43,7 +45,7 @@ public class UIAppBootstrap {
         // 项目路径
         JLabel dirPathLabel = new JLabel("项目路径:");
         panel.add(dirPathLabel);
-        JTextField dirPathText = new JTextField(50);
+        JTextField dirPathText = new JTextField(40);
         dirPathText.setPreferredSize(new Dimension(25, 25));
         dirPathText.setToolTipText("输入需要进行依赖分析的项目完整路径");
         dirPathText.addFocusListener(new JTextFieldHintListener(dirPathText, "输入需要进行依赖分析的项目完整路径"));
