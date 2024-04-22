@@ -26,13 +26,13 @@ public class AppExecutor {
 
         // 没有任何依赖关系存在，直接返回
         if (Objects.isNull(dependencies) || dependencies.isEmpty()) {
-            return CommonConstant.IMAGE_NONE;
+            return CommonConstant.IMAGE_EMPTY;
         }
 
         if (dependencies.size() == 1) {
             String key = dependencies.keySet().stream().collect(Collectors.toList()).get(0);
             if (dependencies.get(key).isEmpty()) {
-                return CommonConstant.IMAGE_NONE;
+                return CommonConstant.IMAGE_EMPTY;
             }
         }
 
