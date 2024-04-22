@@ -38,6 +38,7 @@ public class MavenParser implements Parser {
      * @param modules
      * @return
      */
+    @Override
     public Map<String, List<String>> parseDependency(Map<String, String> modules) {
         Map<String, List<String>> dependencies = new HashMap<>();
         for (Map.Entry<String, String> entry : modules.entrySet()) {

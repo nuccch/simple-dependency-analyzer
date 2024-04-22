@@ -2,6 +2,7 @@ package org.chench.extra.simple.dependency.analyzer.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.chench.extra.simple.dependency.analyzer.bean.CalculateEdge;
+import org.chench.extra.simple.dependency.analyzer.bean.CalculateModule;
 import org.chench.extra.simple.dependency.analyzer.bean.Edge;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
@@ -18,6 +19,33 @@ import java.util.*;
  * @date 2024.04.19
  */
 public class GraphvizIOHandler implements IOHandler {
+    @Override
+    public List<CalculateModule> buildModuleWeight(Map<String, String> modules, Map<String, List<String>> dependencies) {
+        List<String> all = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : dependencies.entrySet()) {
+            all.addAll(entry.getValue());
+        }
+
+        List<CalculateModule> calculateModules = new ArrayList<>();
+        for (Map.Entry<String, String> entry : modules.entrySet()) {
+            calculateModules.add(new CalculateModule(entry.getKey(), entry.getValue(), countModule(entry.getKey(), all)));
+        }
+
+        // 先权重倒序排列
+        Collections.sort(calculateModules);
+
+        // 更新输出序号
+        int number = 0;
+        for (int i = 0; i < calculateModules.size(); i++) {
+            calculateModules.get(i).setNumber(++number);
+        }
+        return calculateModules;
+    }
+
+    private int countModule(String name, List<String> all) {
+        return (int) all.stream().filter(value -> name.equals(value)).count();
+    }
+
     @Override
     public String buildInput(Map<String, String> modules, Map<String, List<String>> dependencies, String name) {
         try {
