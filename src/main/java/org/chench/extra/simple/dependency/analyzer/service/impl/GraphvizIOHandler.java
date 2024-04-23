@@ -6,7 +6,7 @@ import org.chench.extra.simple.dependency.analyzer.bean.CalculateModule;
 import org.chench.extra.simple.dependency.analyzer.bean.Edge;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
-import org.chench.extra.simple.dependency.analyzer.util.EdgeUtil;
+import org.chench.extra.simple.dependency.analyzer.util.AppUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,10 +31,10 @@ public class GraphvizIOHandler implements IOHandler {
             calculateModules.add(new CalculateModule(entry.getKey(), entry.getValue(), countModule(entry.getKey(), all)));
         }
 
-        // 先权重倒序排列
+        // 先按权重倒序排列，权重越高，最先构建
         Collections.sort(calculateModules);
 
-        // 更新输出序号
+        // 更新构建序号，正序排列，序号越低，最先构建
         int number = 0;
         for (int i = 0; i < calculateModules.size(); i++) {
             calculateModules.get(i).setNumber(++number);
@@ -79,7 +79,7 @@ public class GraphvizIOHandler implements IOHandler {
                         findAllPath(entry.getKey(), dependencies, path);
                         // 将第一条边替换为当前要处理的依赖
                         path.set(0, new Edge(entry.getKey(), artifactId));
-                        boolean cycleDependency = existCyclePath(EdgeUtil.wrapCalculateEdge(path));
+                        boolean cycleDependency = existCyclePath(AppUtil.wrapCalculateEdge(path));
                         String color = cycleDependency ? CommonConstant.COLOR_RED : CommonConstant.COLOR_BLACK;
                         System.out.println(path);
                         writer.write(String.format("%s->%s[color=%s];\n", formatName(entry.getKey()), formatName(artifactId), color));

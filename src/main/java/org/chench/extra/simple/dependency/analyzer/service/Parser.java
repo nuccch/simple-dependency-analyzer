@@ -9,6 +9,14 @@ import java.util.Map;
  */
 public interface Parser {
     /**
+     * 解析项目名
+     * @param path
+     * @return
+     */
+
+    String parseProjectName(String path);
+
+    /**
      * 解析指定路径下的模块集合
      * @param path
      * @return

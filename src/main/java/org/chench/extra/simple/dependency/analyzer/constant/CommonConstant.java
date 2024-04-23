@@ -20,6 +20,8 @@ public abstract class CommonConstant {
     public static final String COLOR_RED = "red";
     public static final String COLOR_BLACK = "black";
 
+    public static final String NAME_DEFAULT = "dependency";
+
     /** 需要忽略的目录名 */
     public static final List<String> IGNORE_DIR_NAMES = Arrays.asList(new String[]{
             ".settings",

@@ -21,6 +21,18 @@ public class MavenParser implements Parser {
     private List<String> ignoreDirList = null;
 
     @Override
+    public String parseProjectName(String path) {
+        if (StringUtils.isBlank(path)) {
+            return CommonConstant.NAME_DEFAULT;
+        }
+        if (path.endsWith(File.separator)) {
+            path = path.substring(0, path.length() - 1);
+        }
+
+        return path.substring(path.lastIndexOf(File.separator) + 1);
+    }
+
+    @Override
     public Map<String, String> parseModule(String path) {
         List<File> pomFiles = findPomFiles(path);
         Map<String, String> pomMap = new HashMap<>();

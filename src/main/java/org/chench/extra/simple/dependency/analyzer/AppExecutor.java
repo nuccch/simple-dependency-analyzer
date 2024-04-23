@@ -23,6 +23,8 @@ public class AppExecutor {
     public String execute(String dir, String... ignore) {
         Parser parser = new MavenParser();
         parser.setExtraIgnoreDirs(ignore);
+        String projectName = parser.parseProjectName(dir);
+        ModuleHolder.setProjectName(projectName);
         Map<String, String> modules = parser.parseModule(dir);
         Map<String, List<String>> dependencies = parser.parseDependency(modules);
 

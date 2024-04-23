@@ -2,7 +2,7 @@ package org.chench.extra.simple.dependency.analyzer;
 
 import org.chench.extra.simple.dependency.analyzer.bean.CalculateEdge;
 import org.chench.extra.simple.dependency.analyzer.bean.Edge;
-import org.chench.extra.simple.dependency.analyzer.util.EdgeUtil;
+import org.chench.extra.simple.dependency.analyzer.util.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +48,13 @@ public class FindCyclePathTest {
 
     public static void main(String[] args) {
         FindCyclePathTest test = new FindCyclePathTest();
-        boolean existCycle = test.existCyclePath(EdgeUtil.wrapCalculateEdge(test.path1));
+        boolean existCycle = test.existCyclePath(AppUtil.wrapCalculateEdge(test.path1));
         System.out.println(existCycle);
 
-        existCycle = test.existCyclePath(EdgeUtil.wrapCalculateEdge(test.path2));
+        existCycle = test.existCyclePath(AppUtil.wrapCalculateEdge(test.path2));
         System.out.println(existCycle);
 
-        existCycle = test.existCyclePath(EdgeUtil.wrapCalculateEdge(test.path3));
+        existCycle = test.existCyclePath(AppUtil.wrapCalculateEdge(test.path3));
         System.out.println(existCycle);
     }
 

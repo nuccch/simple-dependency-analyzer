@@ -1,12 +1,17 @@
 package org.chench.extra.simple.dependency.analyzer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.chench.extra.java.util.SimpleOSUtil;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.ui.JTextFieldHintListener;
 import org.chench.extra.simple.dependency.analyzer.ui.ZPanel;
+import org.chench.extra.simple.dependency.analyzer.util.AppUtil;
+import org.chench.extra.simple.dependency.analyzer.util.ModuleHolder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 图形化启动
@@ -64,6 +69,11 @@ public class UIAppBootstrap {
         JButton executeButton = new JButton("开始分析");
         executeButton.setPreferredSize(new Dimension(100, 25));
         panel.add(executeButton);
+
+        // 构建顺序
+        JButton buildOrderButton = new JButton("构建顺序");
+        buildOrderButton.setPreferredSize(new Dimension(100, 25));
+        panel.add(buildOrderButton);
         panel.validate();
 
         framePanel.add(panel, BorderLayout.NORTH);
@@ -78,6 +88,7 @@ public class UIAppBootstrap {
         jScrollPane.getVerticalScrollBar().addAdjustmentListener(e -> SwingUtilities.invokeLater(() -> jScrollPane.updateUI()));
         framePanel.add(jScrollPane, BorderLayout.CENTER);
 
+        // 点击“开始分析”按钮
         executeButton.addActionListener(e -> {
             String dir = dirPathText.getText();
             if (StringUtils.isBlank(dir)) {
@@ -90,6 +101,23 @@ public class UIAppBootstrap {
                 zPanel.setImagePath(output);
                 jScrollPane.updateUI();
             });
+        });
+
+        // 点击“构建顺序”按钮
+        buildOrderButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser(SimpleOSUtil.getUserHome());
+            // 设置默认文件名
+            fileChooser.setSelectedFile(new File(ModuleHolder.getBuildOrderFileName()));
+            int result = fileChooser.showSaveDialog(frame);
+            try {
+                if (JFileChooser.APPROVE_OPTION == result) {
+                    File file = fileChooser.getSelectedFile();
+                    AppUtil.saveBuildOrderFile(file);
+                    JOptionPane.showMessageDialog(frame, "保存文件成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(frame, "保存文件失败", "提示", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 
