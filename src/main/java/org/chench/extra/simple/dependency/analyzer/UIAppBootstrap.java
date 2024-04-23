@@ -88,6 +88,7 @@ public class UIAppBootstrap {
             String output = new AppExecutor().execute(dir, ignores);
             SwingUtilities.invokeLater(() -> {
                 zPanel.setImagePath(output);
+                jScrollPane.updateUI();
             });
         });
     }

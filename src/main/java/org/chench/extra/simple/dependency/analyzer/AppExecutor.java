@@ -28,12 +28,14 @@ public class AppExecutor {
 
         // 没有任何依赖关系存在，直接返回
         if (Objects.isNull(dependencies) || dependencies.isEmpty()) {
+            System.out.println("not exists any dependency");
             return CommonConstant.IMAGE_EMPTY;
         }
 
         if (dependencies.size() == 1) {
             String key = dependencies.keySet().stream().collect(Collectors.toList()).get(0);
             if (dependencies.get(key).isEmpty()) {
+                System.out.println("dependencies are empty!");
                 return CommonConstant.IMAGE_EMPTY;
             }
         }
