@@ -93,6 +93,16 @@ public class MavenParser implements Parser {
             String artifactId = element.elementText(XmlConstant.TARGET_ARTIFACT_ID);
             list.add(artifactId);
         }
+
+        // 将parent也添加为自己的依赖项
+        Element parent = root.element(XmlConstant.TARGET_PARENT);
+        if (!Objects.isNull(parent)) {
+            String parentArtifactId = parent.elementText(XmlConstant.TARGET_ARTIFACT_ID);
+            if (StringUtils.isNotBlank(parentArtifactId)) {
+                list.add(parentArtifactId);
+            }
+        }
+
         return list;
     }
 

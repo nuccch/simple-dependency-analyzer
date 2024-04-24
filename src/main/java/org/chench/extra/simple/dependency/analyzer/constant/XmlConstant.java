@@ -7,6 +7,7 @@ package org.chench.extra.simple.dependency.analyzer.constant;
  */
 public abstract class XmlConstant {
     public static final String TARGET_POM_NAME = "pom.xml";
+    public static final String TARGET_PARENT = "parent";
     public static final String TARGET_ARTIFACT_ID = "artifactId";
     public static final String TARGET_DEPENDENCIES = "dependencies";
     public static final String TARGET_DEPENDENCY = "dependency";
