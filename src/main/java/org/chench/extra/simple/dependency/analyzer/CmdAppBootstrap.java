@@ -7,6 +7,11 @@ import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
  */
 public class CmdAppBootstrap {
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Usage: ");
+            System.out.println("java -jar simple-dependency-analyzer.java <path> [ignores,...]");
+            return;
+        }
         // 项目路径
         String dir = args[0];
         // 需要忽略的目录名，以英文逗号分隔
