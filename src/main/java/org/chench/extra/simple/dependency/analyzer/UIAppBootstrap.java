@@ -176,5 +176,6 @@ public class UIAppBootstrap {
         frame.setVisible(true);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.requestFocus();
     }
 }
