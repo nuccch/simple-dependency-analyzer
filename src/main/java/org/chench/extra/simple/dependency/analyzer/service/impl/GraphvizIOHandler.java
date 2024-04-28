@@ -61,7 +61,7 @@ public class GraphvizIOHandler implements IOHandler {
             writer.write(String.format("digraph %s{\n", name));
             writer.write(String.format("rankdir = LR\n"));
             writer.write(String.format("splines = spline\n"));
-            writer.write(String.format("ratio = 1\n"));
+            writer.write(String.format("ratio = 1.5\n"));
             writer.write(String.format("fixedsize = true\n"));
             writer.write(String.format("dir = forward\n"));
             for (Map.Entry<String, String> entry: modules.entrySet()) {
