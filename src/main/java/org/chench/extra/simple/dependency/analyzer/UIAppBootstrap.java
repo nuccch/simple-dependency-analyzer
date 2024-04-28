@@ -10,6 +10,9 @@ import org.chench.extra.simple.dependency.analyzer.util.ModuleHolder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,6 +22,8 @@ import java.io.IOException;
  * @date 2024.04.20
  */
 public class UIAppBootstrap {
+    final int[] x1 = {0};
+    final int[] y1 = {0};
     public static void main(String[] args) {
         UIAppBootstrap app = new UIAppBootstrap();
         app.start();
@@ -88,6 +93,34 @@ public class UIAppBootstrap {
         jScrollPane.getVerticalScrollBar().addAdjustmentListener(e -> SwingUtilities.invokeLater(() -> jScrollPane.updateUI()));
         framePanel.add(jScrollPane, BorderLayout.CENTER);
 
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // 鼠标释放
+                x1[0] = e.getX();
+                y1[0] = e.getY();
+            }
+        };
+
+        MouseMotionListener mml = new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                // 按住鼠标拖动
+                int x = e.getX() - x1[0];
+                int y = e.getY() - y1[0];
+                zPanel.setLocation(zPanel.getX()+x, zPanel.getY()+y);
+                x1[0] = e.getX();
+                y1[0] = e.getY();
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                // 鼠标移动
+                x1[0] = e.getX();
+                y1[0] = e.getY();
+            }
+        };
+
         // 点击“开始分析”按钮
         executeButton.addActionListener(e -> {
             String dir = dirPathText.getText();
@@ -97,6 +130,16 @@ public class UIAppBootstrap {
 
             String[] ignores = ignoreDirText.getText().split(CommonConstant.SPLIT_CHAR);
             String output = new AppExecutor().execute(dir, ignores);
+            if (CommonConstant.IMAGE_EMPTY.equals(output)) {
+                zPanel.setCursor(Cursor.getDefaultCursor());
+                zPanel.removeMouseMotionListener(mml);
+                zPanel.removeMouseListener(ma);
+            } else {
+                // 设置鼠标为小手形状
+                zPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                zPanel.addMouseMotionListener(mml);
+                zPanel.addMouseListener(ma);
+            }
             SwingUtilities.invokeLater(() -> {
                 zPanel.setImagePath(output);
                 jScrollPane.updateUI();
