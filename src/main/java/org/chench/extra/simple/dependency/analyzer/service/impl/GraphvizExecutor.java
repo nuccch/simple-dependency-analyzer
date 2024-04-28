@@ -60,6 +60,16 @@ public class GraphvizExecutor implements Executor {
                 }
             }
         }
+
+        // 检查mac平台的dot命令路径
+        String osName = SimpleOSUtil.getOSName();
+        if (osName.toLowerCase().contains("mac")) {
+            String dotPath = "/opt/local/bin/dot";
+            if (new File(dotPath).exists()) {
+                return dotPath;
+            }
+        }
+
         return null;
     }
 }
