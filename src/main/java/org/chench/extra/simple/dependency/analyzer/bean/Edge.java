@@ -7,6 +7,7 @@ package org.chench.extra.simple.dependency.analyzer.bean;
  */
 public class Edge {
     private String start;
+    /** start依赖 */
     private String end;
 
     public Edge() {

@@ -82,7 +82,7 @@ public class GraphvizIOHandler implements IOHandler {
                         boolean cycleDependency = existCyclePath(AppUtil.wrapCalculateEdge(path));
                         String color = cycleDependency ? CommonConstant.COLOR_RED : CommonConstant.COLOR_BLACK;
                         System.out.println(path);
-                        writer.write(String.format("%s->%s[color=%s];\n", formatName(entry.getKey()), formatName(artifactId), color));
+                        writer.write(String.format("%s->%s[color=%s];\n", formatName(artifactId), formatName(entry.getKey()), color));
                     }
                 }
             }
