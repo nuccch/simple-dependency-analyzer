@@ -86,6 +86,7 @@ public class UIAppBootstrap {
 
         // 展示依赖图
         ZPanel zPanel = new ZPanel();
+        zPanel.setAutoscrolls(true);
         JScrollPane jScrollPane = new JScrollPane(zPanel);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -111,6 +112,10 @@ public class UIAppBootstrap {
                 zPanel.setLocation(zPanel.getX()+x, zPanel.getY()+y);
                 x1[0] = e.getX();
                 y1[0] = e.getY();
+
+                Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
+                ((JPanel) e.getSource()).scrollRectToVisible(r);
+                framePanel.updateUI();
             }
 
             @Override
