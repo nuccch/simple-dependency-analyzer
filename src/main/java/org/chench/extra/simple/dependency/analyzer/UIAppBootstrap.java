@@ -3,6 +3,8 @@ package org.chench.extra.simple.dependency.analyzer;
 import org.apache.commons.lang3.StringUtils;
 import org.chench.extra.java.util.SimpleOSUtil;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
+import org.chench.extra.simple.dependency.analyzer.dao.ProjectDaoImpl;
+import org.chench.extra.simple.dependency.analyzer.service.impl.ProjectServiceImpl;
 import org.chench.extra.simple.dependency.analyzer.ui.JTextFieldHintListener;
 import org.chench.extra.simple.dependency.analyzer.ui.ZPanel;
 import org.chench.extra.simple.dependency.analyzer.util.AppUtil;
@@ -24,6 +26,7 @@ import java.io.IOException;
 public class UIAppBootstrap {
     final int[] x1 = {0};
     final int[] y1 = {0};
+    ProjectServiceImpl projectService = new ProjectServiceImpl();
     public static void main(String[] args) {
         UIAppBootstrap app = new UIAppBootstrap();
         app.start();
@@ -60,6 +63,12 @@ public class UIAppBootstrap {
         dirPathText.setToolTipText("输入需要进行依赖分析的项目完整路径");
         dirPathText.addFocusListener(new JTextFieldHintListener(dirPathText, "输入需要进行依赖分析的项目完整路径"));
         panel.add(dirPathText);
+
+        // 从数据库查询上一次保存的路径
+        String dirPath = this.projectService.queryPath();
+        if (StringUtils.isNotBlank(dirPath)) {
+            dirPathText.setText(dirPath);
+        }
 
         // 忽略目录名
         JLabel ignoreDirLabel = new JLabel("忽略目录名:");
@@ -133,6 +142,9 @@ public class UIAppBootstrap {
                 return;
             }
 
+            // 将项目路径保存起来
+            this.projectService.savePath(dir);
+
             String[] ignores = ignoreDirText.getText().split(CommonConstant.SPLIT_CHAR);
             String output = new AppExecutor().execute(dir, ignores);
             if (CommonConstant.IMAGE_EMPTY.equals(output)) {
@@ -181,6 +193,6 @@ public class UIAppBootstrap {
         frame.setVisible(true);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.requestFocus();
+        //frame.requestFocus();
     }
 }
