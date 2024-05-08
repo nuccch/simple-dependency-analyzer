@@ -3,7 +3,6 @@ package org.chench.extra.simple.dependency.analyzer;
 import org.apache.commons.lang3.StringUtils;
 import org.chench.extra.java.util.SimpleOSUtil;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
-import org.chench.extra.simple.dependency.analyzer.dao.ProjectDaoImpl;
 import org.chench.extra.simple.dependency.analyzer.service.impl.ProjectServiceImpl;
 import org.chench.extra.simple.dependency.analyzer.ui.JTextFieldHintListener;
 import org.chench.extra.simple.dependency.analyzer.ui.ZPanel;
@@ -11,10 +10,9 @@ import org.chench.extra.simple.dependency.analyzer.util.AppUtil;
 import org.chench.extra.simple.dependency.analyzer.util.ModuleHolder;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -58,11 +56,17 @@ public class UIAppBootstrap {
         // 项目路径
         JLabel dirPathLabel = new JLabel("项目路径:");
         panel.add(dirPathLabel);
-        JTextField dirPathText = new JTextField(40);
+        JTextField dirPathText = new JTextField(35);
         dirPathText.setPreferredSize(new Dimension(25, 25));
         dirPathText.setToolTipText("输入需要进行依赖分析的项目完整路径");
         dirPathText.addFocusListener(new JTextFieldHintListener(dirPathText, "输入需要进行依赖分析的项目完整路径"));
         panel.add(dirPathText);
+
+        // 打开目录按钮
+        JButton selectDirButton = new JButton("选择路径...");
+        selectDirButton.setPreferredSize(new Dimension(90, 25));
+        //selectDirButton.requestFocus();
+        panel.add(selectDirButton);
 
         // 从数据库查询上一次保存的路径
         String dirPath = this.projectService.queryPath();
@@ -81,12 +85,12 @@ public class UIAppBootstrap {
 
         // 开始分析按钮
         JButton executeButton = new JButton("开始分析");
-        executeButton.setPreferredSize(new Dimension(100, 25));
+        executeButton.setPreferredSize(new Dimension(80, 25));
         panel.add(executeButton);
 
         // 构建顺序
         JButton buildOrderButton = new JButton("构建顺序");
-        buildOrderButton.setPreferredSize(new Dimension(100, 25));
+        buildOrderButton.setPreferredSize(new Dimension(80, 25));
         panel.add(buildOrderButton);
         panel.validate();
 
@@ -135,6 +139,39 @@ public class UIAppBootstrap {
             }
         };
 
+        // 点击"选择目录"按钮
+        selectDirButton.addActionListener(e -> {
+            String oldProjectPath = this.projectService.queryPath();
+            if (StringUtils.isNotBlank(oldProjectPath)) {
+                oldProjectPath = new File(oldProjectPath).getParentFile().getAbsolutePath();
+            }
+            String dir = StringUtils.isBlank(oldProjectPath) ? SimpleOSUtil.getUserHome() : oldProjectPath;
+            JFileChooser fileChooser = new JFileChooser(dir);
+            fileChooser.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    // 只能选择目录，不能选择文件
+                    return f.isDirectory();
+                }
+
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            // 只选择目录
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int result = fileChooser.showOpenDialog(frame);
+            if (JFileChooser.APPROVE_OPTION == result) {
+                File file = fileChooser.getSelectedFile();
+                if (file.isFile()) {
+                    return;
+                }
+                dirPathText.setText(file.getAbsolutePath());
+                dirPathText.requestFocus();
+            }
+        });
+
         // 点击“开始分析”按钮
         executeButton.addActionListener(e -> {
             String dir = dirPathText.getText();
@@ -151,6 +188,7 @@ public class UIAppBootstrap {
                 zPanel.setCursor(Cursor.getDefaultCursor());
                 zPanel.removeMouseMotionListener(mml);
                 zPanel.removeMouseListener(ma);
+                JOptionPane.showMessageDialog(frame, "当前项目路径不存在模块依赖关系！", "提示", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 // 设置鼠标为小手形状
                 zPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -186,7 +224,7 @@ public class UIAppBootstrap {
         Dimension screenSize = kit.getScreenSize();
         int screenHeight = screenSize.height;
         int screenWidth = screenSize.width;
-        frame.setSize(screenWidth/2+200, screenHeight/2+100);
+        frame.setSize(screenWidth/2+280, screenHeight/2+150);
         int frameH = frame.getHeight();
         int frameW = frame.getWidth();
         frame.setLocation((screenWidth - frameW) / 2, (screenHeight - frameH) / 2);
