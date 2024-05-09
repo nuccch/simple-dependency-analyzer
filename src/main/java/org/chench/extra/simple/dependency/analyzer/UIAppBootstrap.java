@@ -184,6 +184,10 @@ public class UIAppBootstrap {
 
             String[] ignores = ignoreDirText.getText().split(CommonConstant.SPLIT_CHAR);
             String output = new AppExecutor().execute(dir, ignores);
+            SwingUtilities.invokeLater(() -> {
+                zPanel.setImagePath(output);
+                jScrollPane.updateUI();
+            });
             if (CommonConstant.IMAGE_EMPTY.equals(output)) {
                 zPanel.setCursor(Cursor.getDefaultCursor());
                 zPanel.removeMouseMotionListener(mml);
@@ -195,10 +199,6 @@ public class UIAppBootstrap {
                 zPanel.addMouseMotionListener(mml);
                 zPanel.addMouseListener(ma);
             }
-            SwingUtilities.invokeLater(() -> {
-                zPanel.setImagePath(output);
-                jScrollPane.updateUI();
-            });
         });
 
         // 点击“构建顺序”按钮
