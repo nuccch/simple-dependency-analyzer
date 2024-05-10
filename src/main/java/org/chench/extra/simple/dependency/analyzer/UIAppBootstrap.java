@@ -1,5 +1,7 @@
 package org.chench.extra.simple.dependency.analyzer;
 
+import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import org.apache.commons.lang3.StringUtils;
 import org.chench.extra.java.util.SimpleOSUtil;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
@@ -232,5 +234,11 @@ public class UIAppBootstrap {
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.requestFocus();
+
+        try {
+            UIManager.setLookAndFeel(new WindowsLookAndFeel());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
     }
 }
