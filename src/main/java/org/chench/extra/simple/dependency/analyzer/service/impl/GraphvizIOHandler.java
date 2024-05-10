@@ -1,8 +1,8 @@
 package org.chench.extra.simple.dependency.analyzer.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.chench.extra.simple.dependency.analyzer.algorithm.TopologicalSorter;
 import org.chench.extra.simple.dependency.analyzer.bean.CalculateEdge;
-import org.chench.extra.simple.dependency.analyzer.bean.CalculateModule;
 import org.chench.extra.simple.dependency.analyzer.bean.Edge;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
@@ -19,31 +19,32 @@ import java.util.*;
  * @date 2024.04.19
  */
 public class GraphvizIOHandler implements IOHandler {
+    TopologicalSorter topologicalSorter = new TopologicalSorter();
+
     @Override
-    public List<CalculateModule> buildModuleWeight(Map<String, String> modules, Map<String, List<String>> dependencies) {
-        List<String> all = new ArrayList<>();
+    public List<String> buildOrder(Map<String, String> modules, Map<String, List<String>> dependencies) {
+        List<String> moduleList = new ArrayList<>();
+        moduleList.addAll(modules.keySet());
+        String[] moduleArr = new String[moduleList.size()];
+        moduleList.toArray(moduleArr);
+
+        int len = 0;
         for (Map.Entry<String, List<String>> entry : dependencies.entrySet()) {
-            all.addAll(entry.getValue());
+            len += entry.getValue().size();
         }
 
-        List<CalculateModule> calculateModules = new ArrayList<>();
-        for (Map.Entry<String, String> entry : modules.entrySet()) {
-            calculateModules.add(new CalculateModule(entry.getKey(), entry.getValue(), countModule(entry.getKey(), all)));
+        String[][] dependencyArr = new String[len][2];
+        int i = 0;
+        for (Map.Entry<String, List<String>> entry : dependencies.entrySet()) {
+            String key = entry.getKey();
+            List<String> list = entry.getValue();
+            for (String value : list) {
+                dependencyArr[i++] = new String[]{key, value};
+            }
         }
 
-        // 先按权重倒序排列，权重越高，最先构建
-        Collections.sort(calculateModules);
-
-        // 更新构建序号，正序排列，序号越低，最先构建
-        int number = 0;
-        for (int i = 0; i < calculateModules.size(); i++) {
-            calculateModules.get(i).setNumber(++number);
-        }
-        return calculateModules;
-    }
-
-    private int countModule(String name, List<String> all) {
-        return (int) all.stream().filter(value -> name.equals(value)).count();
+        String[] orderArr = topologicalSorter.findOrder(moduleArr, dependencyArr);
+        return Arrays.asList(orderArr);
     }
 
     @Override

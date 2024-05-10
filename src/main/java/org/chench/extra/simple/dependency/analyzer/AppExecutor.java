@@ -1,6 +1,5 @@
 package org.chench.extra.simple.dependency.analyzer;
 
-import org.chench.extra.simple.dependency.analyzer.bean.CalculateModule;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.Executor;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
@@ -53,8 +52,8 @@ public class AppExecutor {
 
         String name = "dependency";
         IOHandler handler = new GraphvizIOHandler();
-        List<CalculateModule> calculateModules = handler.buildModuleWeight(modules, dependencies);
-        ModuleHolder.setModules(calculateModules);
+        List<String> order = handler.buildOrder(modules, dependencies);
+        ModuleHolder.setModules(order);
         String input = handler.buildInput(modules, dependencies, name);
         String output = handler.buildOutput(name);
 

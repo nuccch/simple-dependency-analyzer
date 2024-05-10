@@ -1,7 +1,6 @@
 package org.chench.extra.simple.dependency.analyzer.util;
 
 import org.chench.extra.simple.dependency.analyzer.bean.CalculateEdge;
-import org.chench.extra.simple.dependency.analyzer.bean.CalculateModule;
 import org.chench.extra.simple.dependency.analyzer.bean.Edge;
 
 import java.io.BufferedWriter;
@@ -32,11 +31,10 @@ public abstract class AppUtil {
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            List<CalculateModule> modules = ModuleHolder.getModules();
+            List<String> modules = ModuleHolder.getOrderedModules();
             // 一次输出模块名称即为构建顺序
             for (int i = 0; i < modules.size(); i++) {
-                CalculateModule module = modules.get(i);
-                writer.write(module.getName() + "\n");
+                writer.write(modules.get(i) + "\n");
             }
             writer.flush();
         }
