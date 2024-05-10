@@ -60,11 +60,16 @@ public class GraphvizIOHandler implements IOHandler {
             }
             BufferedWriter writer = new BufferedWriter(new FileWriter(graphvizInput));
             writer.write(String.format("digraph %s{\n", name));
-            writer.write(String.format("rankdir = LR\n"));
-            writer.write(String.format("splines = spline\n"));
-            writer.write(String.format("ratio = 1.5\n"));
-            writer.write(String.format("fixedsize = true\n"));
-            writer.write(String.format("dir = forward\n"));
+            writer.write(String.format("rankdir = LR;\n"));
+            writer.write(String.format("splines = true;\n"));
+            writer.write(String.format("ratio = compress;\n"));
+            writer.write(String.format("overlap = false;\n"));
+            writer.write(String.format("center = 1;\n"));
+            writer.write(String.format("dir = forward;\n"));
+            writer.write(String.format("shape = plaintext;\n"));
+            writer.write(String.format("nodescolor = none;\n"));
+            writer.write(String.format("nodesnodesep = 0.75;\n"));
+            writer.write(String.format("nodesranksep = 0.75;\n"));
             for (Map.Entry<String, String> entry: modules.entrySet()) {
                 List<String> list = dependencies.get(entry.getKey());
                 if (Objects.isNull(list) || list.isEmpty()) {
