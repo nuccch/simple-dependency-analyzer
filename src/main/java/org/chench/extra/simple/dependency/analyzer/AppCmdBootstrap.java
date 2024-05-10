@@ -1,11 +1,14 @@
 package org.chench.extra.simple.dependency.analyzer;
 
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
+import org.chench.extra.simple.dependency.analyzer.service.impl.AppAnalyzer;
 
 /**
- * 默认执行入口
+ * 命令行启动，如：java -jar simple-dependency-analyzer.jar <project_path> [ignore_dir_names, e.g: mac,boar]
+ * @author chench
+ * @date 2024.05.10
  */
-public class CmdAppBootstrap {
+public class AppCmdBootstrap {
     public static void main(String[] args) {
         if (args.length == 0) {
             System.out.println("Usage: ");
@@ -19,8 +22,8 @@ public class CmdAppBootstrap {
         if (args.length > 1) {
             ignores = args[1].split(CommonConstant.SPLIT_CHAR);
         }
-        AppExecutor appExecutor = new AppExecutor();
-        String output = appExecutor.execute(dir, ignores);
+        AppAnalyzer appAnalyzer = new AppAnalyzer();
+        String output = appAnalyzer.analyze(dir, ignores);
         System.out.println(output);
     }
 }

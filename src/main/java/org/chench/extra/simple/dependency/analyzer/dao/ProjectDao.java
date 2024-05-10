@@ -11,7 +11,7 @@ import java.sql.Statement;
  * @author chench
  * @date 2024.05.08
  */
-public class ProjectDaoImpl implements SQLiteDao {
+public class ProjectDao implements SQLiteDao {
     static {
         try {
             // 加载SQLite JDBC驱动

@@ -84,7 +84,7 @@
                     <archive>
                         <manifest>
                             <!-- 配置main方法入口程序 -->
-                            <mainClass>org.chench.extra.simple.dependency.analyzer.CmdAppBootstrap</mainClass>
+                            <mainClass>org.chench.extra.simple.dependency.analyzer.AppCmdBootstrap</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

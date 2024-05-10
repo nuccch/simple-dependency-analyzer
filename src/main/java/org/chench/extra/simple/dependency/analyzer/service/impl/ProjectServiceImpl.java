@@ -1,7 +1,7 @@
 package org.chench.extra.simple.dependency.analyzer.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.chench.extra.simple.dependency.analyzer.dao.ProjectDaoImpl;
+import org.chench.extra.simple.dependency.analyzer.dao.ProjectDao;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
  * @date 2024.05.08
  */
 public class ProjectServiceImpl {
-    ProjectDaoImpl projectDao = new ProjectDaoImpl();
+    ProjectDao projectDao = new ProjectDao();
     ExecutorService threadPool = Executors.newFixedThreadPool(1);
 
     /**

@@ -1,13 +1,10 @@
-package org.chench.extra.simple.dependency.analyzer;
+package org.chench.extra.simple.dependency.analyzer.service.impl;
 
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
 import org.chench.extra.simple.dependency.analyzer.service.Executor;
 import org.chench.extra.simple.dependency.analyzer.service.IOHandler;
 import org.chench.extra.simple.dependency.analyzer.service.Parser;
-import org.chench.extra.simple.dependency.analyzer.service.impl.GraphvizExecutor;
-import org.chench.extra.simple.dependency.analyzer.service.impl.GraphvizIOHandler;
-import org.chench.extra.simple.dependency.analyzer.service.impl.MavenParser;
-import org.chench.extra.simple.dependency.analyzer.util.ModuleHolder;
+import org.chench.extra.simple.dependency.analyzer.util.ContextHolder;
 
 import java.util.List;
 import java.util.Map;
@@ -18,12 +15,12 @@ import java.util.stream.Collectors;
  * @author chench
  * @date 2024.04.20
  */
-public class AppExecutor {
-    public String execute(String dir, String... ignore) {
+public class AppAnalyzer {
+    public String analyze(String dir, String... ignore) {
         Parser parser = new MavenParser();
         parser.setExtraIgnoreDirs(ignore);
         String projectName = parser.parseProjectName(dir);
-        ModuleHolder.setProjectName(projectName);
+        ContextHolder.setProjectName(projectName);
         Map<String, String> modules = parser.parseModule(dir);
         Map<String, List<String>> dependencies = parser.parseDependency(modules);
 
@@ -53,7 +50,7 @@ public class AppExecutor {
         String name = "dependency";
         IOHandler handler = new GraphvizIOHandler();
         List<String> order = handler.buildOrder(modules, dependencies);
-        ModuleHolder.setModules(order);
+        ContextHolder.setModules(order);
         String input = handler.buildInput(modules, dependencies, name);
         String output = handler.buildOutput(name);
 

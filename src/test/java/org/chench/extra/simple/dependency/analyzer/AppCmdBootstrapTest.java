@@ -5,16 +5,16 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Unit test for simple CmdAppBootstrap.
+ * Unit test for simple AppCmdBootstrap.
  */
-public class CmdAppBootstrapTest
+public class AppCmdBootstrapTest
         extends TestCase {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public CmdAppBootstrapTest(String testName) {
+    public AppCmdBootstrapTest(String testName) {
         super(testName);
     }
 
@@ -22,7 +22,7 @@ public class CmdAppBootstrapTest
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(CmdAppBootstrapTest.class);
+        return new TestSuite(AppCmdBootstrapTest.class);
     }
 
     /**

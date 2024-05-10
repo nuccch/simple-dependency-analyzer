@@ -1,15 +1,15 @@
 package org.chench.extra.simple.dependency.analyzer;
 
-import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import org.apache.commons.lang3.StringUtils;
 import org.chench.extra.java.util.SimpleOSUtil;
 import org.chench.extra.simple.dependency.analyzer.constant.CommonConstant;
+import org.chench.extra.simple.dependency.analyzer.service.impl.AppAnalyzer;
 import org.chench.extra.simple.dependency.analyzer.service.impl.ProjectServiceImpl;
 import org.chench.extra.simple.dependency.analyzer.ui.JTextFieldHintListener;
 import org.chench.extra.simple.dependency.analyzer.ui.ZPanel;
 import org.chench.extra.simple.dependency.analyzer.util.AppUtil;
-import org.chench.extra.simple.dependency.analyzer.util.ModuleHolder;
+import org.chench.extra.simple.dependency.analyzer.util.ContextHolder;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -23,12 +23,12 @@ import java.io.IOException;
  * @author chench
  * @date 2024.04.20
  */
-public class UIAppBootstrap {
+public class AppUIBootstrap {
     final int[] x1 = {0};
     final int[] y1 = {0};
     ProjectServiceImpl projectService = new ProjectServiceImpl();
     public static void main(String[] args) {
-        UIAppBootstrap app = new UIAppBootstrap();
+        AppUIBootstrap app = new AppUIBootstrap();
         app.start();
     }
 
@@ -185,7 +185,7 @@ public class UIAppBootstrap {
             this.projectService.savePath(dir);
 
             String[] ignores = ignoreDirText.getText().split(CommonConstant.SPLIT_CHAR);
-            String output = new AppExecutor().execute(dir, ignores);
+            String output = new AppAnalyzer().analyze(dir, ignores);
             SwingUtilities.invokeLater(() -> {
                 zPanel.setImagePath(output);
                 jScrollPane.updateUI();
@@ -207,7 +207,7 @@ public class UIAppBootstrap {
         buildOrderButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser(SimpleOSUtil.getUserHome());
             // 设置默认文件名
-            fileChooser.setSelectedFile(new File(ModuleHolder.getBuildOrderFileName()));
+            fileChooser.setSelectedFile(new File(ContextHolder.getBuildOrderFileName()));
             int result = fileChooser.showSaveDialog(frame);
             try {
                 if (JFileChooser.APPROVE_OPTION == result) {

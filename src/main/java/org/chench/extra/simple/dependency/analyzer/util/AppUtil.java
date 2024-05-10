@@ -31,7 +31,7 @@ public abstract class AppUtil {
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            List<String> modules = ModuleHolder.getOrderedModules();
+            List<String> modules = ContextHolder.getOrderedModules();
             // 一次输出模块名称即为构建顺序
             for (int i = 0; i < modules.size(); i++) {
                 writer.write(modules.get(i) + "\n");
