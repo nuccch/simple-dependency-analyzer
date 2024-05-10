@@ -63,8 +63,8 @@ public class UIAppBootstrap {
         panel.add(dirPathText);
 
         // 打开目录按钮
-        JButton selectDirButton = new JButton("选择路径...");
-        selectDirButton.setPreferredSize(new Dimension(90, 25));
+        JButton selectDirButton = new JButton("选择...");
+        selectDirButton.setPreferredSize(new Dimension(70, 25));
         //selectDirButton.requestFocus();
         panel.add(selectDirButton);
 
@@ -85,12 +85,12 @@ public class UIAppBootstrap {
 
         // 开始分析按钮
         JButton executeButton = new JButton("开始分析");
-        executeButton.setPreferredSize(new Dimension(80, 25));
+        executeButton.setPreferredSize(new Dimension(90, 25));
         panel.add(executeButton);
 
         // 构建顺序
         JButton buildOrderButton = new JButton("构建顺序");
-        buildOrderButton.setPreferredSize(new Dimension(80, 25));
+        buildOrderButton.setPreferredSize(new Dimension(90, 25));
         panel.add(buildOrderButton);
         panel.validate();
 
